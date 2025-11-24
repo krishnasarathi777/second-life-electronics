@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seller - Phoenix Spare Parts</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<h1>Second Life Electronics</h1>
+<p class="tag">Seller — List a working part</p>
+</div>
+</header>
+
+
+<main class="container main">
+<h2>List a working part</h2>
+<form id="sellerForm" class="card">
+<label>Name<input name="name" required></label>
+<label>Mobile<input name="mobile" required placeholder="10-digit mobile"></label>
+<label>City<input name="city" required></label>
+<label>Brand<input name="brand" required></label>
+<label>Model (exact)<input name="model" required></label>
+<label>Part available<input name="part" required></label>
+<label>Price (₹)<input name="price" type="number"></label>
+<label>Condition (Working / Untested)<input name="condition"></label>
+<label>Image URL (optional)<input name="image" placeholder="paste image url"></label>
+<button type="submit" class="btn">Publish Listing</button>
+</form>
+
+
+<div id="sellerMessage" class="notice"></div>
+
+
+<p class="muted">Tip: Upload images to WhatsApp or Google Drive and paste the share link here.</p>
+</main>
+
+
+<script>
+// Replace API_URL with your Apps Script Web App URL
+const API_URL = 'https://script.google.com/macros/s/AKfycbyz7rcWsoCTIikg08PzhbbS1OYQ9Rgsa17RCGb5R0PGXvOT_KSrbsXu-WxLiQSkDwgDQg/exec';
+
+
+document.getElementById('sellerForm').addEventListener('submit', async (e)=>{
+e.preventDefault();
+const fd = new FormData(e.target);
+const data = Object.fromEntries(fd.entries());
+data.timestamp = new Date().toISOString();
+try{
+const res = await fetch(API_URL, {
+method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+});
+const j = await res.json();
+document.getElementById('sellerMessage').innerText = j.message || 'Listing created.';
+e.target.reset();
+}catch(err){
+document.getElementById('sellerMessage').innerText = 'Submission failed. Please check connection.';
+}
+});
+</script>
+</body>
+</html>

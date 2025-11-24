@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Buyer - Phoenix Spare Parts</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<h1>Second Life Electronics</h1>
+<p class="tag">Buyer — Need a spare part</p>
+</div>
+</header>
+
+
+<main class="container main">
+<h2>Post your requirement</h2>
+<form id="buyerForm" class="card">
+<label>Name<input name="name" required></label>
+<label>Mobile<input name="mobile" required placeholder="10-digit mobile"></label>
+<label>City<input name="city" required></label>
+<label>Brand<input name="brand" required></label>
+<label>Model (as on sticker)<input name="model" required></label>
+<label>Part needed<input name="part" required></label>
+<label>Budget (₹)<input name="budget" type="number"></label>
+<button type="submit" class="btn">Submit Requirement</button>
+</form>
+
+
+<div id="buyerMessage" class="notice"></div>
+
+
+<p class="muted">Or go back to <a href="index.html">home</a>.</p>
+</main>
+
+
+<script>
+// Replace API_URL with your Apps Script Web App URL
+const API_URL = 'https://script.google.com/macros/s/AKfycbyz7rcWsoCTIikg08PzhbbS1OYQ9Rgsa17RCGb5R0PGXvOT_KSrbsXu-WxLiQSkDwgDQg/exec';
+
+
+document.getElementById('buyerForm').addEventListener('submit', async (e)=>{
+e.preventDefault();
+const fd = new FormData(e.target);
+const data = Object.fromEntries(fd.entries());
+data.timestamp = new Date().toISOString();
+try{
+const res = await fetch(API_URL, {
+method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)
+});
+const j = await res.json();
+document.getElementById('buyerMessage').innerText = j.message || 'Requirement submitted.';
+e.target.reset();
+}catch(err){
+document.getElementById('buyerMessage').innerText = 'Submission failed. Please check connection.';
+}
+});
+</script>
+</body>
+</html>

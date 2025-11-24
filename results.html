@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Search Results - Phoenix Spare Parts</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header"><div class="container"><h1>Search Results</h1></div></header>
+<main class="container main">
+<form id="searchForm" class="card">
+<label>Brand<input id="brand" required></label>
+<label>Model<input id="model" required></label>
+<label>Part<input id="part" required></label>
+<button type="submit" class="btn">Search</button>
+</form>
+
+
+<div id="resultsArea"></div>
+</main>
+<script>
+// Replace with your Apps Script URL (doGet endpoint)
+const SEARCH_URL = 'https://script.google.com/macros/s/AKfycbyz7rcWsoCTIikg08PzhbbS1OYQ9Rgsa17RCGb5R0PGXvOT_KSrbsXu-WxLiQSkDwgDQg/exec';
+
+
+document.getElementById('searchForm').addEventListener('submit', async (e)=>{
+e.preventDefault();
+const brand = document.getElementById('brand').value.trim();
+const model = document.getElementById('model').value.trim();
+const part = document.getElementById('part').value.trim();
+const q = `${SEARCH_URL}${encodeURIComponent(brand)}&model=${encodeURIComponent(model)}&part=${encodeURIComponent(part)}`;
+try{
+const res = await fetch(q);
+const j = await res.json();
+const area = document.getElementById('resultsArea'); area.innerHTML = '';
+if(j.results && j.results.length){
+j.results.forEach(r=>{
+const card = document.createElement('div'); card.className='card item';
+card.innerHTML = `<h4>${r.brand} ${r.model}</h4><p>Part: ${r.part} | Price: ₹${r.price || '—'}</p><p>Contact: <a href=\"https://wa.me/${r.mobile.replace(/\D/g,'')}\">WhatsApp</a></p>`;
+area.appendChild(card);
+});
+} else area.innerHTML = '<p>No matches found.</p>';
+}catch(err){ console.error(err); document.getElementById('resultsArea').innerText='Search failed'; }
+});
+</script>
+</body>
+</html>
