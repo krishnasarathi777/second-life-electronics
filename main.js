@@ -1,7 +1,7 @@
 // main.js — Complete Final Version
 // Replace API_URL with your live Google Apps Script endpoint.
 
-const API_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL";
+const API_URL = "https://script.google.com/macros/s/AKfycbyz7rcWsoCTIikg08PzhbbS1OYQ9Rgsa17RCGb5R0PGXvOT_KSrbsXu-WxLiQSkDwgDQg/exec";
 
 //------------------------------------
 // 1. QUICK SEARCH HANDLER (Homepage)
